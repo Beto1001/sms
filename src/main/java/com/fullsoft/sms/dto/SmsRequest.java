@@ -15,7 +15,7 @@ public class SmsRequest {
     private String telefono;
 
     @NotBlank(message = "El mensaje es obligatorio")
-    @Size(min = 1, max = 50, message = "El mensaje debe tener entre 1 y 160 caracteres")
+    @Size(min = 1, max = 50, message = "El mensaje debe tener entre 1 y 50 caracteres")
     private String mensaje;
 
 }
