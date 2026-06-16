@@ -33,6 +33,14 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (!"API_KEY".equalsIgnoreCase(securityProperties.getAuthType())) {
             filterChain.doFilter(request, response);
             return;
@@ -47,20 +55,19 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
             response.getWriter().write("""
-                {
-                    "code":"UNAUTHORIZED",
-                    "message":"API Key inválida"
-                }
-                """);
+                    {
+                        "code":"UNAUTHORIZED",
+                        "message":"API Key inválida"
+                    }
+                    """);
 
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(
-                        "api-user",
-                        null,
-                        Collections.emptyList());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                "api-user",
+                null,
+                Collections.emptyList());
 
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
