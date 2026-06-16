@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SchedulingService {
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     public void mostrarMensaje(){
         log.info("Mostrando mensaje para mantener prendida la máquina (esto es una prueba)");
     }
