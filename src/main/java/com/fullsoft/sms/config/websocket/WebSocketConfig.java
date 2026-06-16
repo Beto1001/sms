@@ -24,4 +24,5 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 "/sms-socket")
                 .setAllowedOrigins("*");
     }
+    
 }
