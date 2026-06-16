@@ -10,6 +10,8 @@ import com.fullsoft.sms.dto.SmsRequest;
 import com.fullsoft.sms.dto.SmsResponse;
 import com.fullsoft.sms.services.SmsService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/sms")
 public class SmsController {
@@ -21,7 +23,7 @@ public class SmsController {
     }
 
     @PostMapping
-    public ResponseEntity<SmsResponse> enviar(@RequestBody SmsRequest request) {
+    public ResponseEntity<SmsResponse> enviar(@Valid @RequestBody SmsRequest request) {
         smsService.enviar(request.getTelefono(), request.getMensaje());
         return ResponseEntity.ok(new SmsResponse("Mensaje enviado correctamente"));
     }
