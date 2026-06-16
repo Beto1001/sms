@@ -24,8 +24,10 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
         Bandwidth limit = Bandwidth.builder()
                 .capacity(10)
-                // .refillGreedy(10, Duration.ofMinutes(1)) esta cosa los va generando conforme pasa el tiempo
-                .refillIntervally(10, Duration.ofMinutes(1)) // este de acá los regenera todos de golpe al pasar el tiempo
+                // .refillGreedy(10, Duration.ofMinutes(1)) esta cosa los va generando conforme
+                // pasa el tiempo
+                .refillIntervally(10, Duration.ofMinutes(1)) // este de acá los regenera todos de golpe al pasar el
+                                                             // tiempo
                 .build();
 
         return Bucket.builder()
@@ -39,6 +41,14 @@ public class RateLimitFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String apiKey = request.getHeader("X-API-KEY");
 
